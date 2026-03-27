@@ -1,0 +1,90 @@
+model:
+  args:
+    n_classes: 2
+    full_skip: off
+    ignore_index: -1
+    lr: 0.0001
+    version: 100
+    continuous_labels: on
+  unet:
+    name: PrithViModel
+    args: 
+      decoder: FPNDecoder
+      embed_tokens: 64
+      embed_dim: 24
+      fuse_stage: 5
+      l2_norm: off
+      baseline: off
+      num_frames: 1
+
+    backbone_args:
+      bands: [1,2,3,7,11, 12]
+
+# Training -----------
+epochs: 50
+batch_size: 5
+ckpt: null
+n_workers: 25
+n_runs: 5
+checkpoint:
+  monitor: "continuous_val/f1/1" 
+  mode: "max"        
+  save_top_k: 1
+
+wandb: off
+project: "Continuous Change Detection"
+name: "HiT"
+
+data:
+  seed: 42
+  train:
+    - type: RavaenDataset
+      path: ''
+      csv: <PATH>
+    - type: SttormDataset
+      path: <PATH>
+      csv: null
+  test: 
+    type: SttormDataset
+    path: <PATH>
+    csv: null
+
+  args:
+    patch_size: 256 
+    bands: [1,2,3, 7,11, 12]
+    n_prev_images: 4
+    binary_change: on
+    continous_labels: on
+    ignore_index: -1
+
+  cutmix:
+    cutmix: on
+    cutmix_min_ratio: 0.3
+    cutmix_max_ratio: 0.5
+    cutmix_partial: on
+    cutmix_type: 'rectangle'
+
+  augmentations:
+      train:
+        - name: Normalize
+          args:
+            mean: [0,0,0,0,0,0]
+            std : [10000,10000,10000,10000,10000,10000]
+        - name: CustomJitter
+          args:
+            brightness: 0.3
+            contrast: 0.3
+        - name: RandomHorizontalFlip
+          args:
+            p : 0.5
+        - name: RandomVerticalFlip
+          args:
+            p : 0.5
+        - name: RandomRotation
+          args:
+            degrees: 15
+      test:
+        - name: Normalize
+          args:
+            mean: [0,0,0,0,0,0]
+            std : [10000,10000,10000,10000,10000,10000]
