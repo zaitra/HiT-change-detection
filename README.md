@@ -11,7 +11,7 @@ HiT maintains historical context from previous observations while reducing data 
 | **HiT-PrithVi** | 0.38 ± 0.08 | 0.70 ± 0.03 | 0.27 ± 0.08 | 7.8M       | **1.004×** |
 | ContUrbanCD     | 0.46 ± 0.26 | 0.82 ± 0.06 | 0.35 ± 0.25 | 25M        | n×         |
 
-Checkpoints for **HiT-PrithVi** are available on Hugging Face - [link](https://huggingface.co/kyselica/HiT-Prithvi/).
+Checkpoints for **HiT-PrithVi** are available on Hugging Face - [link](https://huggingface.co/ZAITRA/HiT-Prithvi).
 
 -----
 
